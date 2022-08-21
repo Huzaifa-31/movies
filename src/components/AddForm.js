@@ -1,6 +1,6 @@
 import React from "react";
 
-function Form({ open, onClose }) {
+function AddForm({ open, onClose }) {
   if (!open) return null;
   return (
     <>
@@ -8,7 +8,7 @@ function Form({ open, onClose }) {
         <div className="container mt-4">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalCenterTitle">
-              Update This Movie
+              Add New Movie
             </h5>
             <button
               type="button"
@@ -23,7 +23,8 @@ function Form({ open, onClose }) {
               type="email"
               class="form-control"
               id="floatingInputValue"
-              value={"test"}
+              value=""
+              placeholder="Title"
             />
 
             <label for="floatingInput">Title</label>
@@ -53,7 +54,7 @@ function Form({ open, onClose }) {
               type="text"
               class="form-control"
               id="floatingInputValue"
-              value={"test"}
+              value={""}
               placeholder="Rate"
             />
             <label for="floatingInput">Rate</label>
@@ -64,7 +65,7 @@ function Form({ open, onClose }) {
               className="btn btn-success"
               data-bs-dismiss="modal"
             >
-              Update
+              Add
             </button>
             <button
               type="button"
@@ -80,4 +81,4 @@ function Form({ open, onClose }) {
   );
 }
 
-export default Form;
+export default AddForm;

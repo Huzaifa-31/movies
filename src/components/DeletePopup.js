@@ -1,8 +1,7 @@
 import React from "react";
 
-function DeletePopup({ open }) {
+function DeletePopup({ open, onClose }) {
   if (!open) return null;
-
   return (
     <div className="modal-dialog modal-dialog-centered">
       <div className="modal-content">
@@ -15,6 +14,7 @@ function DeletePopup({ open }) {
             className="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
+            onClick={onClose}
           ></button>
         </div>
         <div className="modal-body">
@@ -38,11 +38,7 @@ function DeletePopup({ open }) {
           >
             Delete
           </button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            // onClick={}
-          >
+          <button type="button" className="btn btn-secondary" onClick={onClose}>
             Close
           </button>
         </div>

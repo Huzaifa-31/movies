@@ -1,12 +1,16 @@
 import React from "react";
 import Popup from "./components/DeletePopup";
 import Form from "./components/Form";
+import AddForm from "./components/AddForm";
 function App() {
   const [movieData, setMovieData] = React.useState([]);
   const [selectedGenre, setSelectedGenre] = React.useState("All Movies");
   const [selectedPage, setSelectedPage] = React.useState(1);
   const [selectTableHeading, setSelectTableHeading] = React.useState("asc");
+  //popus
   const [isOpen, setOpen] = React.useState(false);
+  const [isOpenForm, setOpenForm] = React.useState(false);
+  const [isOpenAddForm, setOpenAddForm] = React.useState(false);
   ///
   const [searchValue, setSearchValue] = React.useState("");
   // item.Title.toLowerCase().includes(handelSearch)
@@ -132,8 +136,9 @@ function App() {
 
   return (
     <div className="container ">
-      <Form />
-      <Popup open={isOpen} />
+      <Form open={isOpenForm} onClose={() => setOpenForm(false)} />
+      <AddForm open={isOpenAddForm} onClose={() => setOpenAddForm(false)} />
+      <Popup open={isOpen} onClose={() => setOpen(false)} />
       <div className="row">
         <div className="col-3">
           <ul className="list-group mt-4">
@@ -197,7 +202,12 @@ function App() {
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
             />
-            <button className="btn btn-success">Add New</button>
+            <button
+              className="btn btn-success"
+              onClick={() => setOpenAddForm(true)}
+            >
+              Add New
+            </button>
           </div>
           <table className="table ">
             <thead>
@@ -226,7 +236,8 @@ function App() {
                     <td>
                       <button
                         className=" btn btn-primary"
-                        onClick={() => setOpen(true)}
+                        // onClick={() => setOpen(true)}
+                        onClick={() => setOpenForm(true)}
                       >
                         Edit
                       </button>
