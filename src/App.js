@@ -1,12 +1,22 @@
 import React from "react";
-
+import Popup from "./components/DeletePopup";
+import Form from "./components/Form";
 function App() {
   const [movieData, setMovieData] = React.useState([]);
   const [selectedGenre, setSelectedGenre] = React.useState("All Movies");
   const [selectedPage, setSelectedPage] = React.useState(1);
   const [selectTableHeading, setSelectTableHeading] = React.useState("asc");
-
+  const [isOpen, setOpen] = React.useState(false);
+  ///
+  const [searchValue, setSearchValue] = React.useState("");
+  // item.Title.toLowerCase().includes(handelSearch)
   const pageSize = 4;
+
+  //search
+  const handelSearch = async (e) => {
+    e.preventDefault();
+    setMovieData(searchValue);
+  };
 
   //fetching Data
   const fetchData = async () => {
@@ -121,7 +131,9 @@ function App() {
   };
 
   return (
-    <div className="container">
+    <div className="container ">
+      <Form />
+      <Popup open={isOpen} />
       <div className="row">
         <div className="col-3">
           <ul className="list-group mt-4">
@@ -177,13 +189,24 @@ function App() {
         </div>
         <div className="col">
           <p className="mt-4"> Showing {genreFilteredMovies.length} moives</p>
-          <table className="table">
+          <div className="  mb-4 input-group " onSubmit={handelSearch}>
+            <input
+              className="form-control me-2 "
+              type="search"
+              placeholder="Search..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+            <button className="btn btn-success">Add New</button>
+          </div>
+          <table className="table ">
             <thead>
               <tr>
                 <th onClick={() => sortMovies("Title")}>Title</th>
                 <th onClick={() => sortMovies("Genre")}>Genre</th>
                 <th onClick={() => sortMovies("Stock")}>Stock</th>
                 <th onClick={() => sortMovies("Rate")}>Rate</th>
+                <th></th>
                 <th></th>
                 <th></th>
               </tr>
@@ -199,6 +222,14 @@ function App() {
                     <td>
                       <i className="fa fa-heart" aria-hidden="true"></i>
                       <i className="fa fa-heart-o" aria-hidden="true"></i>
+                    </td>
+                    <td>
+                      <button
+                        className=" btn btn-primary"
+                        onClick={() => setOpen(true)}
+                      >
+                        Edit
+                      </button>
                     </td>
                     <td>
                       <button
