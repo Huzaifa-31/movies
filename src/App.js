@@ -1,8 +1,10 @@
 import React from "react";
-import Popup from "./components/DeletePopup";
+import DeletePopup from "./components/DeletePopup";
 import Form from "./components/Form";
 import AddForm from "./components/AddForm";
-function App() {
+// import Example from "./components/ReactBootstrapPop";
+// import DeletePopup from "./components/DeletePopup";
+function App(props) {
   const [movieData, setMovieData] = React.useState([]);
   const [selectedGenre, setSelectedGenre] = React.useState("All Movies");
   const [selectedPage, setSelectedPage] = React.useState(1);
@@ -13,6 +15,7 @@ function App() {
   const [isOpenAddForm, setOpenAddForm] = React.useState(false);
   ///
   const [searchValue, setSearchValue] = React.useState("");
+  const [isDeleteId, setDeleteId] = React.useState(null);
   // item.Title.toLowerCase().includes(handelSearch)
   const pageSize = 4;
 
@@ -49,12 +52,19 @@ function App() {
 
   //to delete the moives from data
   const deleteMoive = (id) => {
-    const tempData = movieData.filter((value) => {
-      return id !== value.id;
-    });
-    setMovieData(tempData);
+    setOpen(true);
+    setDeleteId(id);
   };
 
+  const popDelete = () => {
+    const tempData = movieData.filter((value) => {
+      return value.id !== isDeleteId.id;
+      // console.log("isDeleteId.id", value);
+    });
+    setOpen(false);
+    setMovieData(tempData);
+    // alert("popdelete");
+  };
   //
   const selectedPageNumber = (pageNumber) => {
     setSelectedPage(pageNumber);
@@ -135,149 +145,157 @@ function App() {
   };
 
   return (
-    <div className="container ">
-      <Form open={isOpenForm} onClose={() => setOpenForm(false)} />
-      <AddForm open={isOpenAddForm} onClose={() => setOpenAddForm(false)} />
-      <Popup open={isOpen} onClose={() => setOpen(false)} />
-      <div className="row">
-        <div className="col-3">
-          <ul className="list-group mt-4">
-            <li
-              className={
-                selectedGenre === "All Movies"
-                  ? "list-group-item active"
-                  : "list-group-item "
-              }
-              onClick={() => {
-                handleSelectedGenre("All Movies");
-              }}
-            >
-              All Movies
-            </li>
-            <li
-              className={
-                selectedGenre === "Action"
-                  ? "list-group-item active"
-                  : "list-group-item"
-              }
-              onClick={() => {
-                handleSelectedGenre("Action");
-              }}
-            >
-              Action
-            </li>
-            <li
-              className={
-                selectedGenre === "Comedy"
-                  ? "list-group-item active"
-                  : "list-group-item"
-              }
-              onClick={() => {
-                handleSelectedGenre("Comedy");
-              }}
-            >
-              Comedy
-            </li>
-            <li
-              className={
-                selectedGenre === "Thriller"
-                  ? "list-group-item active"
-                  : "list-group-item"
-              }
-              onClick={() => {
-                handleSelectedGenre("Thriller");
-              }}
-            >
-              Thriller
-            </li>
-          </ul>
-        </div>
-        <div className="col">
-          <p className="mt-4"> Showing {genreFilteredMovies.length} moives</p>
-          <div className="  mb-4 input-group " onSubmit={handelSearch}>
-            <input
-              className="form-control me-2 "
-              type="search"
-              placeholder="Search..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-            <button
-              className="btn btn-success"
-              onClick={() => setOpenAddForm(true)}
-            >
-              Add New
-            </button>
-          </div>
-          <table className="table ">
-            <thead>
-              <tr>
-                <th onClick={() => sortMovies("Title")}>Title</th>
-                <th onClick={() => sortMovies("Genre")}>Genre</th>
-                <th onClick={() => sortMovies("Stock")}>Stock</th>
-                <th onClick={() => sortMovies("Rate")}>Rate</th>
-                <th></th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedMovies.map((value, index) => {
-                return (
-                  <tr>
-                    <td>{value.Title}</td>
-                    <td>{value.Genre}</td>
-                    <td>{value.Metascore}</td>
-                    <td>{value.imdbRating}</td>
-                    <td>
-                      <i className="fa fa-heart" aria-hidden="true"></i>
-                      <i className="fa fa-heart-o" aria-hidden="true"></i>
-                    </td>
-                    <td>
-                      <button
-                        className=" btn btn-primary"
-                        // onClick={() => setOpen(true)}
-                        onClick={() => setOpenForm(true)}
-                      >
-                        Edit
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className=" btn btn-danger"
-                        onClick={() => deleteMoive(value.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <div className="nav">
-            <ul className="pagination">
-              {pages.map((value) => {
-                return (
-                  <li
-                    className={
-                      selectedPage === value ? "page-item active" : "page-item"
-                    }
-                  >
-                    <button
-                      className="page-link"
-                      onClick={() => selectedPageNumber(value)}
-                    >
-                      {value}
-                    </button>
-                  </li>
-                );
-              })}
+    <>
+      <DeletePopup
+        open={isOpen}
+        onClose={() => setOpen(false)}
+        popDelete={popDelete}
+      />
+      <div className="container ">
+        <Form open={isOpenForm} onClose={() => setOpenForm(false)} />
+        <AddForm open={isOpenAddForm} onClose={() => setOpenAddForm(false)} />
+
+        <div className="row">
+          <div className="col-3">
+            <ul className="list-group mt-4">
+              <li
+                className={
+                  selectedGenre === "All Movies"
+                    ? "list-group-item active"
+                    : "list-group-item "
+                }
+                onClick={() => {
+                  handleSelectedGenre("All Movies");
+                }}
+              >
+                All Movies
+              </li>
+              <li
+                className={
+                  selectedGenre === "Action"
+                    ? "list-group-item active"
+                    : "list-group-item"
+                }
+                onClick={() => {
+                  handleSelectedGenre("Action");
+                }}
+              >
+                Action
+              </li>
+              <li
+                className={
+                  selectedGenre === "Comedy"
+                    ? "list-group-item active"
+                    : "list-group-item"
+                }
+                onClick={() => {
+                  handleSelectedGenre("Comedy");
+                }}
+              >
+                Comedy
+              </li>
+              <li
+                className={
+                  selectedGenre === "Thriller"
+                    ? "list-group-item active"
+                    : "list-group-item"
+                }
+                onClick={() => {
+                  handleSelectedGenre("Thriller");
+                }}
+              >
+                Thriller
+              </li>
             </ul>
+          </div>
+          <div className="col">
+            <p className="mt-4"> Showing {genreFilteredMovies.length} moives</p>
+            <div className="  mb-4 input-group " onSubmit={handelSearch}>
+              <input
+                className="form-control me-2 "
+                type="search"
+                placeholder="Search..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+              <button
+                className="btn btn-success"
+                onClick={() => setOpenAddForm(true)}
+              >
+                Add New
+              </button>
+            </div>
+            <table className="table ">
+              <thead>
+                <tr>
+                  <th onClick={() => sortMovies("Title")}>Title</th>
+                  <th onClick={() => sortMovies("Genre")}>Genre</th>
+                  <th onClick={() => sortMovies("Stock")}>Stock</th>
+                  <th onClick={() => sortMovies("Rate")}>Rate</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedMovies.map((value, index) => {
+                  return (
+                    <tr>
+                      <td>{value.Title}</td>
+                      <td>{value.Genre}</td>
+                      <td>{value.Metascore}</td>
+                      <td>{value.imdbRating}</td>
+                      <td>
+                        <i className="fa fa-heart" aria-hidden="true"></i>
+                        <i className="fa fa-heart-o" aria-hidden="true"></i>
+                      </td>
+                      <td>
+                        <button
+                          className=" btn btn-primary"
+                          onClick={() => setOpenForm(true)}
+                        >
+                          Edit
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className=" btn btn-danger"
+                          onClick={() => deleteMoive(value)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <div className="nav">
+              <ul className="pagination">
+                {pages.map((value) => {
+                  return (
+                    <li
+                      className={
+                        selectedPage === value
+                          ? "page-item active"
+                          : "page-item"
+                      }
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => selectedPageNumber(value)}
+                      >
+                        {value}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
