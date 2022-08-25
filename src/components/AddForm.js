@@ -1,82 +1,125 @@
-import React from "react";
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 
 function AddForm({ open, onClose }) {
+  // const [movie, setMovie] = useState(data);
+
+  const [addMovie, setAddMovie] = useState({
+    Title: "",
+    Genere: "",
+    Metascore: "",
+    imdbRating: "",
+  });
+  const handelAddForm = (event) => {
+    event.preventDefault();
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+    const newFormMovie = { ...addMovie };
+    console.log("newFormMovie :>> ", newFormMovie);
+    newFormMovie[fieldName] = fieldValue;
+    setAddMovie(newFormMovie);
+  };
+  const handelAddFormSubmit = (event) => {
+    event.preventDefault();
+
+    const newMovie = {
+      Title: addMovie.Title,
+      Genere: addMovie.Genere,
+      Metascore: addMovie.Metascore,
+      imdbRating: addMovie.imdbRating,
+    };
+    const newMovies = [newMovie];
+    console.log("newMovies", newMovies);
+  };
+  //
   if (!open) return null;
+
   return (
     <>
-      <form className="modal-content modal-dialog-centered mt-4 ">
-        <div className="container mt-4">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalCenterTitle">
-              Add New Movie
-            </h5>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              onClick={onClose}
-            ></button>
-          </div>
-          <div class="form-floating mb-3 ">
-            <input
-              type="email"
-              class="form-control"
-              id="floatingInputValue"
-              value=""
-              placeholder="Title"
-            />
+      <Modal show={open} onHide={onClose}>
+        <Form
+          className="modal-content modal-dialog-centered"
+          onSubmit={handelAddFormSubmit}
+        >
+          <div className="container mt-4">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalCenterTitle">
+                Add New Movie
+              </h5>
+              <Button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onClick={onClose}
+              ></Button>
+            </div>
+            <div class="form-floating mb-3 ">
+              <input
+                type="test"
+                class="form-control"
+                id="floatingInputValue"
+                name="Title"
+                placeholder="Title"
+                onChange={handelAddForm}
+              />
 
-            <label for="floatingInput">Title</label>
+              <label for="floatingInput">Title</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="floatingInputValue"
+                name="Genere"
+                placeholder="Genere"
+                onChange={handelAddForm}
+              />
+              <label for="floatingInput">Genere</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="floatingInputValue"
+                name="Metascore"
+                placeholder="Stock"
+                onChange={handelAddForm}
+              />
+              <label for="floatingInput">Stock</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="floatingInputValue"
+                name="imdbRating"
+                placeholder="Rate"
+                onChange={handelAddForm}
+              />
+              <label for="floatingInput">Rate</label>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-success"
+                data-bs-dismiss="modal"
+              >
+                Add
+              </button>
+              <Button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                Close
+              </Button>
+            </div>
           </div>
-          <div class="form-floating mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="floatingInputValue"
-              value=""
-              placeholder="Genere"
-            />
-            <label for="floatingInput">Genere</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="floatingInputValue"
-              value={""}
-              placeholder="Stock"
-            />
-            <label for="floatingInput">Stock</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="floatingInputValue"
-              value={""}
-              placeholder="Rate"
-            />
-            <label for="floatingInput">Rate</label>
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-success"
-              data-bs-dismiss="modal"
-            >
-              Add
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={onClose}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </form>
+        </Form>
+      </Modal>
     </>
   );
 }
