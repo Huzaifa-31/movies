@@ -19,6 +19,10 @@ function App(props) {
   // item.Title.toLowerCase().includes(handelSearch)
   const pageSize = 4;
 
+  React.useEffect(() => {
+    console.log("movieData", movieData);
+  });
+
   //search
   const handelSearch = async (e) => {
     e.preventDefault();
@@ -49,6 +53,7 @@ function App(props) {
       : movieData.filter((movie) => {
           return movie.Genre === selectedGenre ? true : false;
         });
+  console.log("genreFilteredMovies :>> ", genreFilteredMovies);
 
   //to delete the moives from data
   const deleteMoive = (id) => {
@@ -153,7 +158,12 @@ function App(props) {
       />
       <div className="container ">
         <Form open={isOpenForm} onClose={() => setOpenForm(false)} />
-        <AddForm open={isOpenAddForm} onClose={() => setOpenAddForm(false)} />
+        <AddForm
+          open={isOpenAddForm}
+          onClose={() => setOpenAddForm(false)}
+          setMovieData={setMovieData}
+          movieData={movieData}
+        />
 
         <div className="row">
           <div className="col-3">

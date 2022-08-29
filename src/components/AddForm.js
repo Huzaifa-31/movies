@@ -3,9 +3,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 
-function AddForm({ open, onClose }) {
-  // const [movie, setMovie] = useState(data);
-
+function AddForm({ open, onClose, setMovieData, movieData }) {
   const [addMovie, setAddMovie] = useState({
     Title: "",
     Genere: "",
@@ -23,15 +21,21 @@ function AddForm({ open, onClose }) {
   };
   const handelAddFormSubmit = (event) => {
     event.preventDefault();
-
-    const newMovie = {
-      Title: addMovie.Title,
-      Genere: addMovie.Genere,
-      Metascore: addMovie.Metascore,
-      imdbRating: addMovie.imdbRating,
-    };
-    const newMovies = [newMovie];
-    console.log("newMovies", newMovies);
+    if (
+      setAddMovie === { Title: "", Genere: "", Metascore: "", imdbRating: "" }
+    ) {
+      return;
+    } else {
+      const newMovie = {
+        Title: addMovie.Title,
+        Genre: addMovie.Genere,
+        Metascore: addMovie.Metascore,
+        imdbRating: addMovie.imdbRating,
+      };
+      const newMovies = [...movieData, newMovie];
+      console.log("newMovies", newMovies);
+      setMovieData(newMovies);
+    }
   };
   //
   if (!open) return null;
@@ -103,7 +107,7 @@ function AddForm({ open, onClose }) {
             </div>
             <div className="modal-footer">
               <button
-                type="button"
+                type="submit"
                 className="btn btn-success"
                 data-bs-dismiss="modal"
               >
